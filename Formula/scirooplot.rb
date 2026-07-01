@@ -22,17 +22,14 @@ class Scirooplot < Formula
         source /path/to/root/bin/thisroot.sh
     EOS
 
-    root_prefix = nil
-    if which("root-config")
-      root_prefix = Utils.popen_read("root-config", "--prefix").chomp
-    elsif ENV["ROOTSYS"]
-      root_prefix = ENV["ROOTSYS"]
-    end
-    ENV.append_path "CMAKE_PREFIX_PATH", root_prefix if root_prefix
+    root_prefix = Utils.popen_read("root-config", "--prefix").chomp if which("root-config")
+
+    root_dir = "#{root_prefix}/lib/cmake/ROOT"
 
     system "cmake", "-S", ".", "-B", "build",
            "-DCMAKE_BUILD_TYPE=Release",
-           "-DCMAKE_PREFIX_PATH=#{ENV["CMAKE_PREFIX_PATH"]}",
+           "-DROOT_DIR=#{root_dir}",
+           "-DCMAKE_PREFIX_PATH=#{root_prefix}",
            *std_cmake_args
 
     system "cmake", "--build", "build"
