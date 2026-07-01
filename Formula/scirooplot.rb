@@ -32,6 +32,7 @@ class Scirooplot < Formula
 
     system "cmake", "-S", ".", "-B", "build",
            "-DCMAKE_BUILD_TYPE=Release",
+           "-DCMAKE_PREFIX_PATH=#{ENV["CMAKE_PREFIX_PATH"]}",
            *std_cmake_args
 
     system "cmake", "--build", "build"
