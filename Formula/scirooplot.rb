@@ -21,6 +21,12 @@ class Scirooplot < Formula
       root_prefix = Utils.popen_read(rc, "--prefix").chomp
     end
 
+    rc = which("root-config")
+    ohai rc
+
+    rc2 = Pathname.new(`command -v root-config`.strip)
+    ohai rc2
+
     if root_prefix.nil?
       odie <<~EOS
         ROOT is required to build SciRooPlot but was not found.
