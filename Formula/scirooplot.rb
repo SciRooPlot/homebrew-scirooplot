@@ -10,7 +10,7 @@ class Scirooplot < Formula
   depends_on "python"
   depends_on "fmt"
   depends_on "boost"
-  depends_on "root", optional: true
+  depends_on "root" => :optional
 
   def install
     root_prefix = nil
