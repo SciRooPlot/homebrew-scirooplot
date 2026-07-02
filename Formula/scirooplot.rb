@@ -3,6 +3,7 @@ class Scirooplot < Formula
   license "GPL-3.0-or-later"
   version "2.0.0"
   homepage "https://github.com/SciRooPlot/SciRooPlot"
+  head "#{homepage}.git", branch: "master"
   url "#{homepage}/archive/refs/tags/v#{version}.tar.gz"
   sha256 "8c94fe90de56c780c7404b7b036aed102dd7cbc350553552989f82ee62033b79"
 
