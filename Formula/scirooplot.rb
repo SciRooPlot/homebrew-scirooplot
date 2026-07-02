@@ -10,40 +10,12 @@ class Scirooplot < Formula
   depends_on "python"
   depends_on "fmt"
   depends_on "boost"
-  depends_on "root" => :optional
+  depends_on "root"
 
   def install
-    root_prefix = nil
-
-    if build.with?("root")
-      root_prefix = Formula["root"].opt_prefix
-    elsif (rc = which("root-config"))
-      root_prefix = Utils.popen_read(rc, "--prefix").chomp
-    end
-
-    system "echo", ENV["PATH"]
-  
-    if root_prefix.nil?
-      odie <<~EOS
-        ROOT is required to build SciRooPlot but was not found.
-
-        You can install it via:
-          brew install root
-
-        or ensure root-config is available in homebrew PATH before retrying:
-          source /path/to/root/bin/thisroot.sh
-          ln -s $(root-config --bindir)/root-config $(brew --prefix)/bin/root-config
-
-      EOS
-    end
-
-    args = std_cmake_args
-    args << "-DCMAKE_PREFIX_PATH=#{root_prefix}"
-
     system "cmake", "-S", ".", "-B", "build",
            "-DCMAKE_BUILD_TYPE=Release",
-           *args
-
+           *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
