@@ -12,8 +12,6 @@ class Scirooplot < Formula
   depends_on "boost"
   depends_on "root", optional: true
 
-  option "with-system-root", "Use system-installed ROOT instead of Homebrew ROOT"
-
   def install
     root_prefix = nil
 
