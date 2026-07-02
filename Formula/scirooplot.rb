@@ -20,21 +20,39 @@ class Scirooplot < Formula
 
       Or ensure an existing ROOT installation is active:
         source /path/to/root/bin/thisroot.sh
+
+      If CMake cannot find your ROOT installation, retry with:
+
+        ROOT_DIR=$(root-config --prefix) brew install scirooplot
+
     EOS
 
-    root_prefix = Utils.popen_read("root-config", "--prefix").chomp if which("root-config")
+    root_dir = ENV["ROOT_DIR"]
 
-    root_dir = "#{root_prefix}/lib/cmake/ROOT"
+      if root_dir.nil? || root_dir.empty?
+        if Formula["root"].any_version_installed?
+          root_dir = Formula["root"].opt_lib/"cmake/ROOT"
+        elsif (rc = which("root-config"))
+          root_prefix = Utils.popen_read(rc, "--prefix").chomp
+          root_dir = Pathname(root_prefix)
+        end
+      end
 
-    system "cmake", "-S", ".", "-B", "build",
-           "-DCMAKE_BUILD_TYPE=Release",
-           "-DROOT_DIR=#{root_dir}",
-           "-DCMAKE_PREFIX_PATH=#{root_prefix}",
-           *std_cmake_args
+      if root_dir.nil?
+        opoo <<~EOS
+          ROOT was not detected automatically.
+        EOS
+      end
 
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
-  end
+      args = std_cmake_args
+      args << "-DROOT_DIR=#{root_dir}" if root_dir
+
+      system "cmake", "-S", ".", "-B", "build",
+             "-DCMAKE_BUILD_TYPE=Release",
+             *args
+
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"  end
 
   def caveats
     <<~EOS
