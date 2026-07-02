@@ -10,49 +10,43 @@ class Scirooplot < Formula
   depends_on "python"
   depends_on "fmt"
   depends_on "boost"
+  depends_on "root", optional: true
+
+  option "with-system-root", "Use system-installed ROOT instead of Homebrew ROOT"
 
   def install
-    opoo <<~EOS
-      SciRooPlot requires ROOT.
+    root_prefix = nil
 
-      If needed install via Homebrew:
-        brew install root
+    if build.with?("root")
+      root_prefix = Formula["root"].opt_prefix
+    elsif (rc = which("root-config"))
+      root_prefix = Utils.popen_read(rc, "--prefix").chomp
+    end
 
-      Or ensure an existing ROOT installation is active:
-        source /path/to/root/bin/thisroot.sh
+    if root_prefix.nil?
+      odie <<~EOS
+        ROOT is required to build SciRooPlot but was not found.
 
-      If CMake cannot find your ROOT installation, retry with:
+        You can install it via:
+          brew install root
 
-        ROOT_DIR=$(root-config --prefix) brew install scirooplot
+        or ensure root-config is available in homebrew PATH before retrying:
+          source /path/to/root/bin/thisroot.sh
+          ln -s $(root-config --bindir)/root-config $(brew --prefix)/bin/root-config
 
-    EOS
+      EOS
+    end
 
-    root_dir = ENV["ROOT_DIR"]
+    args = std_cmake_args
+    args << "-DCMAKE_PREFIX_PATH=#{root_prefix}"
 
-      if root_dir.nil? || root_dir.empty?
-        if Formula["root"].any_version_installed?
-          root_dir = Formula["root"].opt_lib/"cmake/ROOT"
-        elsif (rc = which("root-config"))
-          root_prefix = Utils.popen_read(rc, "--prefix").chomp
-          root_dir = Pathname(root_prefix)
-        end
-      end
+    system "cmake", "-S", ".", "-B", "build",
+           "-DCMAKE_BUILD_TYPE=Release",
+           *args
 
-      if root_dir.nil?
-        opoo <<~EOS
-          ROOT was not detected automatically.
-        EOS
-      end
-
-      args = std_cmake_args
-      args << "-DROOT_DIR=#{root_dir}" if root_dir
-
-      system "cmake", "-S", ".", "-B", "build",
-             "-DCMAKE_BUILD_TYPE=Release",
-             *args
-
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"  end
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+  end
 
   def caveats
     <<~EOS
