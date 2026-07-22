@@ -5,7 +5,7 @@ class Scirooplot < Formula
   homepage "https://github.com/SciRooPlot/SciRooPlot"
   head "#{homepage}.git", branch: "master"
   url "#{homepage}/archive/refs/tags/v#{version}.tar.gz"
-  sha256 "8c94fe90de56c780c7404b7b036aed102dd7cbc350553552989f82ee62033b79"
+  sha256 "c4da68a8e520aae8d6c4e6dd6c632179b277a88426b4457a98ece64edb731619"
 
   depends_on "cmake"
   depends_on "python"
