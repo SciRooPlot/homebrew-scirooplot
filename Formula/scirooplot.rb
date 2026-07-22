@@ -1,7 +1,7 @@
 class Scirooplot < Formula
   desc "Scientific plotting framework based on ROOT"
   license "GPL-3.0-or-later"
-  version "2.0.0"
+  version "3.0.0"
   homepage "https://github.com/SciRooPlot/SciRooPlot"
   head "#{homepage}.git", branch: "master"
   url "#{homepage}/archive/refs/tags/v#{version}.tar.gz"
