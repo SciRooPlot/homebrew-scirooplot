@@ -1,11 +1,11 @@
 class Scirooplot < Formula
   desc "Scientific plotting framework based on ROOT"
   license "GPL-3.0-or-later"
-  version "3.1.0"
+  version "3.2.0"
   homepage "https://github.com/SciRooPlot/SciRooPlot"
   head "#{homepage}.git", branch: "master"
   url "#{homepage}/archive/refs/tags/v#{version}.tar.gz"
-  sha256 "ed6e9d6212bbe67fcc1c1300c9ff88c5e01ed7063a2dea797b3430cece15be95"
+  sha256 "0fb3cd69a0eac90d5e98ebd344adcb2d6c149e2a87324eaae088c65bb0ee34dd"
 
   depends_on "cmake"
   depends_on "python"
