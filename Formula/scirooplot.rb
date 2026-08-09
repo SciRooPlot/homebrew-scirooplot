@@ -1,11 +1,12 @@
 class Scirooplot < Formula
-  desc "Scientific plotting framework based on ROOT"
+  desc "A command-line plotting app to manage and visualize scientific data."
   license "GPL-3.0-or-later"
-  version "3.2.0"
+
+  version "3.2.1"
   homepage "https://github.com/SciRooPlot/SciRooPlot"
   head "#{homepage}.git", branch: "master"
   url "#{homepage}/archive/refs/tags/v#{version}.tar.gz"
-  sha256 "0fb3cd69a0eac90d5e98ebd344adcb2d6c149e2a87324eaae088c65bb0ee34dd"
+  sha256 "d5d512dc5bff63834bc4fbbc048aaa8e88aff5b05cfd91ca4aa0b17bfe5da02a"
 
   depends_on "cmake"
   depends_on "python"
@@ -22,10 +23,15 @@ class Scirooplot < Formula
     system "cmake", "--install", "build"
   end
 
+  test do
+    system bin/"srp", "info"
+  end
+
   def caveats
     <<~EOS
-        Put the following line in your .zshrc to activate SciRooPlot:
-          source $(brew --prefix scirooplot)/share/scirooplot/scirooplot-env.sh
+      To activate SciRooPlot (best place it in ~/.zshrc or ~/.bashrc):
+
+        source $(brew --prefix scirooplot)/share/scirooplot/scirooplot-env.sh
     EOS
   end
 end
