@@ -2,11 +2,11 @@ class Scirooplot < Formula
   desc "A command-line plotting app to manage and visualize scientific data."
   license "GPL-3.0-or-later"
 
-  version "3.3.2"
+  version "3.3.3"
   homepage "https://github.com/SciRooPlot/SciRooPlot"
   head "#{homepage}.git", branch: "master"
   url "#{homepage}/archive/refs/tags/v#{version}.tar.gz"
-  sha256 "62f6ac99f0ae90d509f96910a66cdd5ec06cec5373f99fe75843e767c54bf249"
+  sha256 "77557e73add76d456940c7a0e99da3e1007c1b905b1ce73e37ae2f1e774b4497"
 
   depends_on "cmake"
   depends_on "python"
